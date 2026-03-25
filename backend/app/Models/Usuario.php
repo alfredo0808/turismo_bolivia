@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
-    //
+    protected $table    = 'usuarios';
+    protected $fillable = [
+        'nombre','email','password','rol','activo'
+    ];
+    protected $hidden   = ['password','remember_token'];
+
+    protected $casts = [
+        'password' => 'hashed',
+    ];
 }

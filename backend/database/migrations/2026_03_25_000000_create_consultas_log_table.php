@@ -11,10 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('consultas_log', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+       Schema::create('consultas_log', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('destino_id')
+              ->nullable()
+              ->constrained('destinos')
+              ->onUpdate('cascade')
+              ->onDelete('set null');
+        $table->enum('tipo_consulta', [
+            'vista_detalle','busqueda','recomendacion',
+            'evento','temporada','home'
+        ])->default('busqueda');
+        $table->string('termino_busqueda', 200)->nullable();
+        $table->enum('idioma', ['es','en'])->default('es');
+        $table->enum('dispositivo', ['desktop','mobile','tablet'])->nullable();
+        $table->string('ip_hash', 64)->nullable();
+        $table->date('fecha');
+        $table->time('hora');
+        $table->timestamp('created_at')->useCurrent();
+    });
     }
 
     /**

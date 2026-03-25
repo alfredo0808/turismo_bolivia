@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('traducciones', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+         Schema::create('traducciones', function (Blueprint $table) {
+        $table->id();
+        $table->string('tabla', 100);
+        $table->string('campo', 100);
+        $table->unsignedInteger('registro_id');
+        $table->enum('idioma', ['es','en'])->default('es');
+        $table->text('contenido');
+        $table->timestamps();
+        $table->unique(['tabla','campo','registro_id','idioma'], 'uq_traduccion');
+    });
     }
 
     /**

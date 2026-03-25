@@ -12,9 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('eventos_culturales', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('destino_id')
+              ->constrained('destinos')
+              ->onUpdate('cascade')
+              ->onDelete('cascade');
+        $table->string('nombre', 200);
+        $table->text('descripcion')->nullable();
+        $table->enum('tipo', [
+            'festival','feria','carnaval','feriado',
+            'ceremonia','gastronomico','deportivo','otro'
+        ])->default('festival');
+        $table->unsignedTinyInteger('mes');
+        $table->unsignedTinyInteger('dia_inicio')->nullable();
+        $table->unsignedTinyInteger('dia_fin')->nullable();
+        $table->tinyInteger('es_anual')->default(1);
+        $table->tinyInteger('activo')->default(1);
+        $table->timestamps();
+    });
     }
 
     /**

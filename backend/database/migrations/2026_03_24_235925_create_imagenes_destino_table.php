@@ -12,9 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('imagenes_destino', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('destino_id')
+              ->constrained('destinos')
+              ->onUpdate('cascade')
+              ->onDelete('cascade');
+        $table->string('ruta', 255);
+        $table->string('alt_texto', 200)->nullable();
+        $table->unsignedTinyInteger('orden')->default(0);
+        $table->timestamp('created_at')->useCurrent();
+    });
     }
 
     /**

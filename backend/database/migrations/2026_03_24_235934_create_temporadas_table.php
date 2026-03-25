@@ -12,9 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('temporadas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('destino_id')
+              ->constrained('destinos')
+              ->onUpdate('cascade')
+              ->onDelete('cascade');
+        $table->unsignedTinyInteger('mes_inicio');
+        $table->unsignedTinyInteger('mes_fin');
+        $table->enum('nivel', ['alta','media','baja'])->default('media');
+        $table->text('descripcion')->nullable();
+        $table->string('clima', 200)->nullable();
+        $table->decimal('temperatura_min', 4, 1)->nullable();
+        $table->decimal('temperatura_max', 4, 1)->nullable();
+        $table->enum('precipitacion', ['baja','moderada','alta'])->nullable();
+        $table->enum('nivel_afluencia', ['bajo','moderado','alto'])->nullable();
+        $table->tinyInteger('activo')->default(1);
+        $table->timestamps();
+    });
     }
 
     /**

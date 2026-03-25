@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usuarios', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+       Schema::create('usuarios', function (Blueprint $table) {
+        $table->id();
+        $table->string('nombre', 150);
+        $table->string('email', 191)->unique();
+        $table->string('password', 255);
+        $table->enum('rol', ['superadmin','admin','editor'])->default('editor');
+        $table->tinyInteger('activo')->default(1);
+        $table->timestamp('ultimo_acceso')->nullable();
+        $table->rememberToken();
+        $table->timestamps();
+    });
     }
 
     /**
